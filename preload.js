@@ -28,11 +28,10 @@ window.addEventListener("load", function (event) {
       folderListElement.innerHTML = '';
       result.data.forEach(element => {
         folderListElement.innerHTML += `
-        <button aria-current="true" type="button" class="py-2 px-4 w-full text-left text-white
-        bg-blue-700 rounded-t-lg border-b border-gray-200 cursor-pointer focus:outline-none 
-        dark:bg-gray-800 dark:border-gray-600 browse-images-btn" data-path="${result.folder}//${element}">
-         ${element}
-       </button>
+        <a href="#" class="browse-images-btn block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white " 
+        data-path="${result.folder}//${element}">
+        ${element}
+        </a>   
       `
       });
       const browsImagesBtns = document.getElementsByClassName("browse-images-btn");
