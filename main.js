@@ -1,10 +1,12 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, dialog,ipcMain  } = require('electron')
+const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('path')
 const { } = require('electron')
 const fs = require('fs');
+const fsPromises = fs.promises;
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -12,7 +14,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      // nodeIntegration: true
+      nodeIntegration: true
     }
   })
 
@@ -35,19 +37,7 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
-  dialog.showOpenDialog({ properties: ['openDirectory'] }).then(a => {
-    console.log(a)
-    const selectFolder = a.filePaths[0];
-    fs.readdir(selectFolder, function (err, files) {
-      if (err) {
-        return console.log('Unable to scan directory: ' + err);
-      }
-      files.forEach(function (file) {
-        console.log(path.join(selectFolder, file)
-        );
-      });
-    });
-  })
+
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -58,8 +48,24 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.handle('my-invokable-ipc', async (event, ...args) => {
- 
-  return args
+  console.log(args)
+  const selectFolder = args[0]
+  const data = await fsPromises.readdir(selectFolder);
+
+  return data
+})
+ipcMain.handle('browseFolder', async (event, ...args) => {
+  const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if(!dialogCallback.canceled){
+    const data = await fsPromises.readdir(dialogCallback.filePaths[0]);
+    console.log(data)
+    console.log(dialogCallback.filePaths[0])
+    return {
+      "folder":dialogCallback.filePaths[0],
+      "data":data
+    }
+  }
+  return {};
 })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
