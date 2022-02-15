@@ -47,25 +47,38 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-ipcMain.handle('my-invokable-ipc', async (event, ...args) => {
-  console.log(args)
-  const selectFolder = args[0]
-  const data = await fsPromises.readdir(selectFolder);
 
-  return data
+
+ipcMain.handle('browseImage', async (event, ...args) => {
+  // const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  // if(!dialogCallback.canceled){
+  //   const data = await fsPromises.readdir(dialogCallback.filePaths[0]);
+  //   console.log(data)
+  //   console.log(dialogCallback.filePaths[0])
+  //   return {
+  //     "folder":dialogCallback.filePaths[0],
+  //     "data":data
+  //   }
+  // }
+  // return {};
+  const data = await fsPromises.readdir(args[0]);
+  return {
+    "folder":args[0],
+    "data":data.sort((x,y)=>x.localeCompare(y, 'zh-TW' , { numeric: true }))
+  }
 })
+
 ipcMain.handle('browseFolder', async (event, ...args) => {
   const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if(!dialogCallback.canceled){
-    const data = await fsPromises.readdir(dialogCallback.filePaths[0]);
-    console.log(data)
-    console.log(dialogCallback.filePaths[0])
+    const folder=dialogCallback.filePaths[0];
+    const data = await fsPromises.readdir(folder);
     return {
-      "folder":dialogCallback.filePaths[0],
-      "data":data
+      "folder":folder,
+      "data":data.sort((x,y)=>x.localeCompare(y, 'zh-TW' , { numeric: true }))
     }
   }
-  return {};
+  return [];
 })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

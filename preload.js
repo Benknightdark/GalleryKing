@@ -23,9 +23,33 @@ window.addEventListener("load", function (event) {
       `
       });
     }
+    const createFolderList = (result) => {
+      // const folder = "C:\\Users\\smart\\Dropbox\\NewIG2\\candice0723"
+      // const result = await ipcRenderer.invoke('my-invokable-ipc', folder)
+
+      const folderListElement = document.getElementById("folderList");
+      folderListElement.innerHTML = '';
+      result.data.forEach(element => {
+        folderListElement.innerHTML += `
+        <button aria-current="true" type="button" class="py-2 px-4 w-full text-left text-white
+        bg-blue-700 rounded-t-lg border-b border-gray-200 cursor-pointer focus:outline-none 
+        dark:bg-gray-800 dark:border-gray-600 browse-images-btn" data-path="${result.folder}//${element}">
+         ${element}
+       </button>
+      `
+      });
+      const browsImagesBtns = document.getElementsByClassName("browse-images-btn");
+      for (var i = 0; i < browsImagesBtns.length; i++) {
+        browsImagesBtns[i].addEventListener("click", async function () {
+          const result = await ipcRenderer.invoke('browseImage', this.dataset.path)
+          createImageList(result)
+        })
+      }
+
+    }
     document.getElementById("browse-btn").addEventListener("click", async () => {
-      const result = await ipcRenderer.invoke('browseFolder')
-      createImageList(result)
+      const result = await ipcRenderer.invoke('browseFolder')//browseImage
+      createFolderList(result)
     })
 
   })()
