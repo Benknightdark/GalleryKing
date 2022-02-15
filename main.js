@@ -1,9 +1,10 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, dialog } = require('electron')
 const path = require('path')
-
+const { } = require('electron')
+const fs = require('fs');
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -31,6 +32,19 @@ app.whenReady().then(() => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+  dialog.showOpenDialog({ properties: ['openDirectory'] }).then(a => {
+    console.log(a)
+    const selectFolder = a.filePaths[0];
+    fs.readdir(selectFolder, function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      }
+      files.forEach(function (file) {
+        console.log(path.join(selectFolder, file)
+        );
+      });
+    });
   })
 })
 
