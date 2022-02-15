@@ -5,9 +5,8 @@
 window.addEventListener("load", function (event) {
   (async () => {
     const { ipcRenderer } = require('electron')
+    // 新增圖片列表
     const createImageList = (result) => {
-      // const folder = "C:\\Users\\smart\\Dropbox\\NewIG2\\candice0723"
-      // const result = await ipcRenderer.invoke('my-invokable-ipc', folder)
       console.log(result)
       folder = result.folder;
       console.log(document.getElementById("imageList"))
@@ -23,10 +22,8 @@ window.addEventListener("load", function (event) {
       `
       });
     }
+    // 新增資料夾列表
     const createFolderList = (result) => {
-      // const folder = "C:\\Users\\smart\\Dropbox\\NewIG2\\candice0723"
-      // const result = await ipcRenderer.invoke('my-invokable-ipc', folder)
-
       const folderListElement = document.getElementById("folderList");
       folderListElement.innerHTML = '';
       result.data.forEach(element => {
@@ -47,6 +44,8 @@ window.addEventListener("load", function (event) {
       }
 
     }
+
+    // 取得子資料夾
     document.getElementById("browse-btn").addEventListener("click", async () => {
       const result = await ipcRenderer.invoke('browseFolder')//browseImage
       createFolderList(result)

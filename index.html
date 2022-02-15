@@ -18,22 +18,18 @@
 <body>
 
   <div class="flex">
-    <div class="flex-col">
+    <div class="flex-col" id="folderCol" style="display:inherit">
       <div class="w-48 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 
       dark:bg-gray-700 dark:border-gray-600 dark:text-white" id="folderList">     
       </div>
     </div>
     <div class="grow h-14">
       <div class="flex-col	">
-        <label class="relative block">
-          <input
-            class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-            placeholder="資料夾路徑" type="text" name="search" />
-        </label>
         <button type="button" id="browse-btn" class="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md 
-        hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">選取</button>
+        hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">選取資料夾</button>
+        <div class="container grid grid-cols-1 xl:grid-cols-3 md:grid-cols-3 2xl:grid-cols-3  gap-2 mx-auto" id="imageList">
+        </div>
       </div>
-      <div class="container grid grid-cols-3 gap-2 mx-auto" id="imageList"></div>
     </div>
   </div>
 
