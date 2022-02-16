@@ -47,21 +47,22 @@ window.addEventListener("load", function (event) {
       }
 
     }
-
     // 取得子資料夾
     document.getElementById("browse-btn").addEventListener("click", async () => {
       const result = await ipcRenderer.invoke('browseFolder')
-      console.log(result)
       createFolderList(result)
     })
     // 取得資料夾的圖片
     document.getElementById("browse-image-btn").addEventListener("click", async () => {
       const result = await ipcRenderer.invoke('browseImage')
-      console.log(result)
       createImageList(result)
       const sidebar = document.querySelector(".sidebar");
       sidebar.style['display'] = 'none'
       document.querySelector("title").innerHTML = result.folder
+    })
+    this.document.getElementById("scroll-top-btn").addEventListener('click',()=> {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
     })
   })()
 });
