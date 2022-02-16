@@ -12,33 +12,24 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/flowbite@1.3.3/dist/flowbite.min.css" />
 
-  <title>Hello World!</title>
+  <title>Gallery King</title>
 </head>
 
 <body>
 
-  <!-- <div class="flex">
-    <div class="flex-col" id="folderCol" style="display:inherit">
-      <div class="w-48 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 
-      dark:bg-gray-700 dark:border-gray-600 dark:text-white" id="folderList">     
-      </div>
-    </div>
-    <div class="grow h-14">
-      <div class="flex-col	">
-        <button type="button" id="browse-btn" class="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md 
-        hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">選取資料夾</button>
-        <div class="container grid grid-cols-1 xl:grid-cols-3 md:grid-cols-3 2xl:grid-cols-3  gap-2 mx-auto" id="imageList">
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <div class="relative min-h-screen md:flex">
+  <div class="relative min-h-screen">
 
     <!-- mobile menu bar -->
-    <div class="bg-gray-800 text-gray-100 flex justify-between md:hidden">
+    <div class="bg-gray-800 text-gray-100 flex justify-between ">
       <!-- logo -->
-      <a href="#" class="block p-4 text-white font-bold">Better Dev</a>
-
+      <a href="#" class="block p-4 text-white font-bold">Gallery King</a>
+      <a href="#" class="text-white flex items-center space-x-2 px-4" id="browse-btn">
+        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+        <span class="text-2xl font-extrabold">打開資料夾</span>
+      </a>
       <!-- mobile menu button -->
       <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,32 +37,23 @@
         </svg>
       </button>
     </div>
+    <div class="flex  flex-nowrap	">
+      <!-- sidebar   md:relative md:translate-x-0   absolute -translate-x-full-->
+      <div class="sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2 
+       inset-y-0 left-0 transform  relative translate-x-0 
+      transition duration-200 ease-in-out" style="display: inherit;">
+        <!-- nav -->
+        <nav id="folderList">
+        </nav>
+      </div>
 
-    <!-- sidebar -->
-    <div
-      class="sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
-
-      <!-- logo -->
-      <a href="#" class="text-white flex items-center space-x-2 px-4" id="browse-btn">
-        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-        </svg>
-        <span class="text-2xl font-extrabold">Better Dev</span>
-      </a>
-
-      <!-- nav -->
-      <nav id="folderList">
-      </nav>
-    </div>
-
-    <!-- content -->
-    <div class="flex-1 p-10 text-2xl font-bold">
-      <div class="container grid grid-cols-1 xl:grid-cols-3 md:grid-cols-3 2xl:grid-cols-3  gap-2 mx-auto"
-        id="imageList">
+      <!-- content -->
+      <div class="flex-1 p-5 text-2xl font-bold">
+        <div class="container grid grid-cols-1 xl:grid-cols-3 md:grid-cols-3 2xl:grid-cols-3  gap-2 mx-auto"
+          id="imageList">
+        </div>
       </div>
     </div>
-
   </div>
   <!-- You can also require other files to run in this process -->
   <script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></script>
