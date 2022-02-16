@@ -34,6 +34,9 @@ window.addEventListener("load", function (event) {
         </a>   
       `
       });
+      const sidebar = document.querySelector(".sidebar");
+      sidebar.classList.remove("bg-blue-800")
+      sidebar.classList.add("bg-blue-800")
       const browsImagesBtns = document.getElementsByClassName("browse-images-btn");
       for (var i = 0; i < browsImagesBtns.length; i++) {
         browsImagesBtns[i].addEventListener("click", async function () {
@@ -46,11 +49,8 @@ window.addEventListener("load", function (event) {
 
     // 取得子資料夾
     document.getElementById("browse-btn").addEventListener("click", async () => {
-      const result = await ipcRenderer.invoke('browseFolder')//browseImage
+      const result = await ipcRenderer.invoke('browseFolder')
       createFolderList(result)
     })
-
-
-
   })()
 });
