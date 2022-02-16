@@ -12,10 +12,16 @@ window.addEventListener("load", function (event) {
       imageListElement.innerHTML = '';
       result.data.forEach(element => {
         imageListElement.innerHTML += `
-      <div class="w-full rounded">
-        <img
+      <div class="w-full  rounded relative border-2 border-indigo-600">
+         <div class="absolute top-0 right-0">
+         <input id="checkbox-table-1" type="checkbox"
+          class="w-10 h-10 text-blue-600 bg-gray-100 rounded border-gray-300 
+          focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
+           focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+         </div>
+          <img
           src="${folder}\\${element}"
-          alt="image">
+          alt="image"/>   
       </div> 
       `
       });
@@ -60,9 +66,9 @@ window.addEventListener("load", function (event) {
       sidebar.style['display'] = 'none'
       document.querySelector("title").innerHTML = result.folder
     })
-    this.document.getElementById("scroll-top-btn").addEventListener('click',()=> {
+    // 回到最上頁
+    this.document.getElementById("scroll-top-btn").addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
     })
   })()
 });
