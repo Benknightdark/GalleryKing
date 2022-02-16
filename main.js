@@ -50,32 +50,41 @@ app.on('window-all-closed', () => {
 
 
 ipcMain.handle('browseImage', async (event, ...args) => {
-  // const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
-  // if(!dialogCallback.canceled){
-  //   const data = await fsPromises.readdir(dialogCallback.filePaths[0]);
-  //   console.log(data)
-  //   console.log(dialogCallback.filePaths[0])
-  //   return {
-  //     "folder":dialogCallback.filePaths[0],
-  //     "data":data
-  //   }
-  // }
-  // return {};
-  const data = await fsPromises.readdir(args[0]);
-  return {
-    "folder":args[0],
-    "data":data.sort((x,y)=>x.localeCompare(y, 'zh-TW' , { numeric: true }))
+  console.log(args)
+  let folder ;
+  if (args.length>0) {
+    folder = args[0];
+    const data = await fsPromises.readdir(folder);
+    const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
+    return {
+      "folder": folder,
+      "data": sortData
+    }
+  } else {
+    const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+    if (!dialogCallback.canceled) {
+      folder = dialogCallback.filePaths[0];
+      const data = await fsPromises.readdir(folder);
+      const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
+      return {
+        "folder": folder,
+        "data": sortData
+      }
+    }
+    return {};
   }
+
 })
 
 ipcMain.handle('browseFolder', async (event, ...args) => {
-  const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
-  if(!dialogCallback.canceled){
-    const folder=dialogCallback.filePaths[0];
+  const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  console.log(dialogCallback)
+  if (!dialogCallback.canceled) {
+    const folder = dialogCallback.filePaths[0];
     const data = await fsPromises.readdir(folder);
     return {
-      "folder":folder,
-      "data":data.sort((x,y)=>x.localeCompare(y, 'zh-TW' , { numeric: true }))
+      "folder": folder,
+      "data": data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
     }
   }
   return [];
