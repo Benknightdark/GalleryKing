@@ -4,10 +4,11 @@
 // It has the same sandbox as a Chrome extension.
 window.addEventListener("load", function (event) {
   (async () => {
+    let currentSelectFolder = ''
     const { ipcRenderer } = require('electron')
     // 新增圖片列表
     const createImageList = (result) => {
-      folder = result.folder;
+      let folder = result.folder;
       const imageListElement = document.getElementById("imageList");
       imageListElement.innerHTML = '';
       result.data.forEach(element => {
@@ -27,6 +28,7 @@ window.addEventListener("load", function (event) {
       </div> 
       `
       });
+      currentSelectFolder = folder;
     }
     // 新增資料夾列表
     const createFolderList = (result) => {
@@ -87,16 +89,18 @@ window.addEventListener("load", function (event) {
     document.getElementById('copy-btn').addEventListener('click', async () => {
       const selectedImageList = getSelectedImages();
       if (selectedImageList.length > 0) {
-        const result = await ipcRenderer.invoke('copyImages', selectedImageList)
-        console.log(result)
+        await ipcRenderer.invoke('copyImages', selectedImageList)
       }
     })
     // 搬移圖片
     document.getElementById('move-btn').addEventListener('click', async () => {
       const selectedImageList = getSelectedImages();
       if (selectedImageList.length > 0) {
-        const result = await ipcRenderer.invoke('moveImages', selectedImageList)
-        console.log(result)
+        await ipcRenderer.invoke('moveImages', selectedImageList)
+        document.querySelectorAll('.image-checkbox:checked').forEach(r => {
+          r.parentElement.parentElement.remove();
+        })
+
       }
     })
   })()
