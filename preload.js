@@ -14,8 +14,9 @@ window.addEventListener("load", function (event) {
         imageListElement.innerHTML += `
       <div class="w-full  rounded relative border-2 border-indigo-600">
          <div class="absolute top-0 right-0">
-         <input id="checkbox-table-1" type="checkbox"
-          class="w-10 h-10 text-blue-600 bg-gray-100 rounded border-gray-300 
+         <input  type="checkbox"
+          data-folder="${folder}\\${element}"
+          class="image-checkbox w-10 h-10 text-blue-600 bg-gray-100 rounded border-gray-300 
           focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
            focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
          </div>
@@ -67,8 +68,21 @@ window.addEventListener("load", function (event) {
       document.querySelector("title").innerHTML = result.folder
     })
     // 回到最上頁
-    this.document.getElementById("scroll-top-btn").addEventListener('click', () => {
+    document.getElementById("scroll-top-btn").addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    })
+    this.document.getElementById('copy-btn').addEventListener('click', async () => {
+      const selectedImage = document.querySelectorAll('.image-checkbox:checked')
+      const selectedImageList = []
+
+      if (selectedImage !== null) {
+        selectedImage.forEach(s => {
+          selectedImageList.push(s.dataset['folder'])
+        })
+        const result = await ipcRenderer.invoke('copyImages',selectedImageList)
+        console.log(result)
+      }
+
     })
   })()
 });

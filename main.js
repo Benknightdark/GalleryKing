@@ -89,5 +89,10 @@ ipcMain.handle('browseFolder', async (event, ...args) => {
   }
   return [];
 })
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+
+ipcMain.handle('copyImages', async (event, ...args) => {
+ return args;
+})
+ipcMain.handle('moveImages', async (event, ...args) => {
+  return args;
+ })
