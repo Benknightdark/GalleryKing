@@ -1,8 +1,13 @@
-https://kenwheeler.github.io/slick/
-https://heroicons.com/
-# 功能新增
-- 排序圖片
-- 切頁查詢
-- 選取圖片
-- 搬移圖片
-- 複製圖片
+# 圖庫王
+## 執行開發環境程式
+```
+npm start 
+```
+## 打包程式
+```
+npm run package
+```
+# 功能
+- 檢視子資料夾的所有照片
+- 搬移照片
+- 複製照片
