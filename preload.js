@@ -75,7 +75,6 @@ window.addEventListener("load", function (event) {
     this.document.getElementById('copy-btn').addEventListener('click', async () => {
       const selectedImage = document.querySelectorAll('.image-checkbox:checked')
       const selectedImageList = []
-
       if (selectedImage !== null) {
         selectedImage.forEach(s => {
           selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
@@ -83,7 +82,17 @@ window.addEventListener("load", function (event) {
         const result = await ipcRenderer.invoke('copyImages', selectedImageList)
         console.log(result)
       }
-
+    })
+    this.document.getElementById('move-btn').addEventListener('click', async () => {
+      const selectedImage = document.querySelectorAll('.image-checkbox:checked')
+      const selectedImageList = []
+      if (selectedImage !== null) {
+        selectedImage.forEach(s => {
+          selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
+        })
+        const result = await ipcRenderer.invoke('moveImages', selectedImageList)
+        console.log(result)
+      }
     })
   })()
 });

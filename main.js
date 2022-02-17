@@ -95,13 +95,19 @@ ipcMain.handle('copyImages', async (event, ...args) => {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
     sourceImages.map(async image => {
-      console.log(image)
-      console.log('------------------------------')
-      await fsPromises.copyFile(image['path'], destinationFolder+"\\"+image['file']);
+      await fsPromises.copyFile(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
   return args;
 })
 ipcMain.handle('moveImages', async (event, ...args) => {
+  const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if (!dialogCallback.canceled) {
+    const destinationFolder = dialogCallback.filePaths[0];
+    const sourceImages = args[0]
+    sourceImages.map(async image => {
+      await fsPromises.rename(image['path'], destinationFolder + "\\" + image['file']);
+    })
+  }
   return args;
 })
