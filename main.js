@@ -6,6 +6,7 @@ const path = require('path')
 const { } = require('electron')
 const fs = require('fs');
 const fsPromises = fs.promises;
+const notifier = require('node-notifier');
 
 const createWindow = () => {
   // Create the browser window.
@@ -50,35 +51,77 @@ app.on('window-all-closed', () => {
 
 
 ipcMain.handle('browseImage', async (event, ...args) => {
-  // const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
-  // if(!dialogCallback.canceled){
-  //   const data = await fsPromises.readdir(dialogCallback.filePaths[0]);
-  //   console.log(data)
-  //   console.log(dialogCallback.filePaths[0])
-  //   return {
-  //     "folder":dialogCallback.filePaths[0],
-  //     "data":data
-  //   }
-  // }
-  // return {};
-  const data = await fsPromises.readdir(args[0]);
-  return {
-    "folder":args[0],
-    "data":data.sort((x,y)=>x.localeCompare(y, 'zh-TW' , { numeric: true }))
+  console.log(args)
+  let folder;
+  if (args.length > 0) {
+    // 直接開啟資料夾裡的所有圖片
+    folder = args[0];
+    const data = await fsPromises.readdir(folder);
+    const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
+    return {
+      "folder": folder,
+      "data": sortData
+    }
+  } else {
+    // 選擇要開的資料夾裡的圖片
+    const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+    if (!dialogCallback.canceled) {
+      folder = dialogCallback.filePaths[0];
+      const data = await fsPromises.readdir(folder);
+      const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
+      return {
+        "folder": folder,
+        "data": sortData
+      }
+    }
+    return {};
   }
+
 })
 
 ipcMain.handle('browseFolder', async (event, ...args) => {
-  const dialogCallback=await dialog.showOpenDialog({ properties: ['openDirectory'] });
-  if(!dialogCallback.canceled){
-    const folder=dialogCallback.filePaths[0];
+  const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if (!dialogCallback.canceled) {
+    const folder = dialogCallback.filePaths[0];
     const data = await fsPromises.readdir(folder);
     return {
-      "folder":folder,
-      "data":data.sort((x,y)=>x.localeCompare(y, 'zh-TW' , { numeric: true }))
+      "folder": folder,
+      "data": data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
     }
   }
-  return [];
+  return {};
 })
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+
+ipcMain.handle('copyImages', async (event, ...args) => {
+  const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if (!dialogCallback.canceled) {
+    const destinationFolder = dialogCallback.filePaths[0];
+    const sourceImages = args[0]
+    sourceImages.map(async image => {
+      await fsPromises.copyFile(image['path'], destinationFolder + "\\" + image['file']);
+    })
+  }
+  notifier.notify({
+    title: 'Gallery King',
+    message: '完成複製圖片工作',
+    icon: path.join(__dirname, '/assets/icon.png'),
+    sound: true,
+  });
+})
+
+ipcMain.handle('moveImages', async (event, ...args) => {
+  const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if (!dialogCallback.canceled) {
+    const destinationFolder = dialogCallback.filePaths[0];
+    const sourceImages = args[0]
+    sourceImages.map(async image => {
+      await fsPromises.rename(image['path'], destinationFolder + "\\" + image['file']);
+    })
+  }
+  notifier.notify({
+    title: 'Gallery King',
+    message: '完成搬移圖片工作',
+    icon: path.join(__dirname, '/assets/icon.png'),
+    sound: true,
+  });
+})

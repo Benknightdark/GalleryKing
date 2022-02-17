@@ -1,5 +1,5 @@
 {
-  "name": "my-electron-app",
+  "name": "gallery-king",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -19,16 +19,19 @@
     "electron": "^17.0.1"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "node-notifier": "^10.0.1"
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./assets/icon.ico"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "my_electron_app"
+            "name": "gallery-king"
           }
         },
         {
