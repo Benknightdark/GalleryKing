@@ -15,7 +15,8 @@ window.addEventListener("load", function (event) {
       <div class="w-full  rounded relative border-2 border-indigo-600">
          <div class="absolute top-0 right-0">
          <input  type="checkbox"
-          data-folder="${folder}\\${element}"
+          data-file="${element}"
+          data-path="${folder}\\${element}"
           class="image-checkbox w-10 h-10 text-blue-600 bg-gray-100 rounded border-gray-300 
           focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
            focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -77,9 +78,9 @@ window.addEventListener("load", function (event) {
 
       if (selectedImage !== null) {
         selectedImage.forEach(s => {
-          selectedImageList.push(s.dataset['folder'])
+          selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
         })
-        const result = await ipcRenderer.invoke('copyImages',selectedImageList)
+        const result = await ipcRenderer.invoke('copyImages', selectedImageList)
         console.log(result)
       }
 

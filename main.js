@@ -51,8 +51,8 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('browseImage', async (event, ...args) => {
   console.log(args)
-  let folder ;
-  if (args.length>0) {
+  let folder;
+  if (args.length > 0) {
     folder = args[0];
     const data = await fsPromises.readdir(folder);
     const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
@@ -78,7 +78,6 @@ ipcMain.handle('browseImage', async (event, ...args) => {
 
 ipcMain.handle('browseFolder', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
-  console.log(dialogCallback)
   if (!dialogCallback.canceled) {
     const folder = dialogCallback.filePaths[0];
     const data = await fsPromises.readdir(folder);
@@ -91,8 +90,18 @@ ipcMain.handle('browseFolder', async (event, ...args) => {
 })
 
 ipcMain.handle('copyImages', async (event, ...args) => {
- return args;
+  const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if (!dialogCallback.canceled) {
+    const destinationFolder = dialogCallback.filePaths[0];
+    const sourceImages = args[0]
+    sourceImages.map(async image => {
+      console.log(image)
+      console.log('------------------------------')
+      await fsPromises.copyFile(image['path'], destinationFolder+"\\"+image['file']);
+    })
+  }
+  return args;
 })
 ipcMain.handle('moveImages', async (event, ...args) => {
   return args;
- })
+})
