@@ -6,6 +6,7 @@ const path = require('path')
 const { } = require('electron')
 const fs = require('fs');
 const fsPromises = fs.promises;
+const notifier = require('node-notifier');
 
 const createWindow = () => {
   // Create the browser window.
@@ -53,6 +54,7 @@ ipcMain.handle('browseImage', async (event, ...args) => {
   console.log(args)
   let folder;
   if (args.length > 0) {
+    // 直接開啟資料夾裡的所有圖片
     folder = args[0];
     const data = await fsPromises.readdir(folder);
     const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
@@ -61,6 +63,7 @@ ipcMain.handle('browseImage', async (event, ...args) => {
       "data": sortData
     }
   } else {
+    // 選擇要開的資料夾裡的圖片
     const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
     if (!dialogCallback.canceled) {
       folder = dialogCallback.filePaths[0];
@@ -86,7 +89,7 @@ ipcMain.handle('browseFolder', async (event, ...args) => {
       "data": data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
     }
   }
-  return [];
+  return {};
 })
 
 ipcMain.handle('copyImages', async (event, ...args) => {
@@ -98,8 +101,14 @@ ipcMain.handle('copyImages', async (event, ...args) => {
       await fsPromises.copyFile(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
-  return args;
+  notifier.notify({
+    title: 'Gallery King',
+    message: '完成複製圖片工作',
+    icon: path.join(__dirname, '/assets/icon.png'),
+    sound: true,
+  });
 })
+
 ipcMain.handle('moveImages', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
@@ -109,5 +118,10 @@ ipcMain.handle('moveImages', async (event, ...args) => {
       await fsPromises.rename(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
-  return args;
+  notifier.notify({
+    title: 'Gallery King',
+    message: '完成搬移圖片工作',
+    icon: path.join(__dirname, '/assets/icon.png'),
+    sound: true,
+  });
 })
