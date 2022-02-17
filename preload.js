@@ -55,6 +55,17 @@ window.addEventListener("load", function (event) {
       }
 
     }
+    // 取得已選取的圖片
+    const getSelectedImages = () => {
+      const selectedImage = document.querySelectorAll('.image-checkbox:checked')
+      const selectedImageList = []
+      if (selectedImage !== null) {
+        selectedImage.forEach(s => {
+          selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
+        })
+      }
+      return selectedImageList
+    }
     // 取得子資料夾
     document.getElementById("browse-btn").addEventListener("click", async () => {
       const result = await ipcRenderer.invoke('browseFolder')
@@ -72,17 +83,6 @@ window.addEventListener("load", function (event) {
     document.getElementById("scroll-top-btn").addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     })
-    // 取得已選取的圖片
-    const getSelectedImages = () => {
-      const selectedImage = document.querySelectorAll('.image-checkbox:checked')
-      const selectedImageList = []
-      if (selectedImage !== null) {
-        selectedImage.forEach(s => {
-          selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
-        })
-      }
-      return selectedImageList
-    }
     // 複製圖片
     document.getElementById('copy-btn').addEventListener('click', async () => {
       const selectedImageList = getSelectedImages();
