@@ -72,24 +72,29 @@ window.addEventListener("load", function (event) {
     document.getElementById("scroll-top-btn").addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     })
-    this.document.getElementById('copy-btn').addEventListener('click', async () => {
+    // 取得已選取的圖片
+    const getSelectedImages = () => {
       const selectedImage = document.querySelectorAll('.image-checkbox:checked')
       const selectedImageList = []
       if (selectedImage !== null) {
         selectedImage.forEach(s => {
           selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
         })
+      }
+      return selectedImageList
+    }
+    // 複製圖片
+    document.getElementById('copy-btn').addEventListener('click', async () => {
+      const selectedImageList = getSelectedImages();
+      if (selectedImageList.length > 0) {
         const result = await ipcRenderer.invoke('copyImages', selectedImageList)
         console.log(result)
       }
     })
-    this.document.getElementById('move-btn').addEventListener('click', async () => {
-      const selectedImage = document.querySelectorAll('.image-checkbox:checked')
-      const selectedImageList = []
-      if (selectedImage !== null) {
-        selectedImage.forEach(s => {
-          selectedImageList.push({ path: s.dataset['path'], file: s.dataset['file'] })
-        })
+    // 搬移圖片
+    document.getElementById('move-btn').addEventListener('click', async () => {
+      const selectedImageList = getSelectedImages();
+      if (selectedImageList.length > 0) {
         const result = await ipcRenderer.invoke('moveImages', selectedImageList)
         console.log(result)
       }

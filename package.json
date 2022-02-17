@@ -19,7 +19,8 @@
     "electron": "^17.0.1"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "node-notifier": "^10.0.1"
   },
   "config": {
     "forge": {
