@@ -113,6 +113,7 @@ window.addEventListener("load", function (event) {
           const result = await ipcRenderer.invoke('browseImage', prev.dataset.path)
           document.querySelector("title").innerHTML = prev.dataset.folder
           createImageList(result)
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       })
     })
@@ -126,6 +127,7 @@ window.addEventListener("load", function (event) {
           const result = await ipcRenderer.invoke('browseImage', prev.dataset.path)
           document.querySelector("title").innerHTML = prev.dataset.folder
           createImageList(result)
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       })
     })
