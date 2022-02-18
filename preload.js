@@ -103,33 +103,27 @@ window.addEventListener("load", function (event) {
 
       }
     })
-    // 上一頁
-    document.getElementById('prev-btn').addEventListener('click', async () => {
+    // 切換頁面的圖片
+    const changeImageListByNextAndPrev = (page) => {
       const title = document.querySelector("title").innerHTML;
       const folderList = document.querySelectorAll('#folderList > a')
       folderList.forEach(async (r, i) => {
         if (r.dataset['folder'] === title) {
-          const prev = folderList[i - 1]
+          const prev = folderList[i + page]
           const result = await ipcRenderer.invoke('browseImage', prev.dataset.path)
           document.querySelector("title").innerHTML = prev.dataset.folder
           createImageList(result)
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       })
+    }
+    // 上一頁
+    document.getElementById('prev-btn').addEventListener('click', async () => {
+      changeImageListByNextAndPrev(-1)
     })
     // 下一頁
     document.getElementById('next-btn').addEventListener('click', async () => {
-      const title = document.querySelector("title").innerHTML;
-      const folderList = document.querySelectorAll('#folderList > a')
-      folderList.forEach(async (r, i) => {
-        if (r.dataset['folder'] === title) {
-          const prev = folderList[i + 1]
-          const result = await ipcRenderer.invoke('browseImage', prev.dataset.path)
-          document.querySelector("title").innerHTML = prev.dataset.folder
-          createImageList(result)
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      })
+      changeImageListByNextAndPrev(1)
     })
   })()
 });
