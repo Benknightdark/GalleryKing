@@ -1,15 +1,14 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 
-contextBridge.exposeInMainWorld('electron', {
-  send: (channel: string, ...args: any[]) => {
-    ipcRenderer.send(channel, ...args);
+contextBridge.exposeInMainWorld('bridge', {
+  browseImage: async (args: any | null=null) => {
+    if (args !== null) {
+      return await ipcRenderer.invoke('browseImage', ...args)
+    } else {
+      return await ipcRenderer.invoke('browseImage')
+    }
   },
-  on: (
-    channel: string,
-    listener: (event: IpcRendererEvent, ...args: any[]) => void,
-  ) => {
-    ipcRenderer.on(channel, listener);
-  },
-});
+}
+)
 
 console.log('preload tttttttttttttttttt=============================')
