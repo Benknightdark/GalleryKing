@@ -1,27 +1,22 @@
 {
   "name": "gallery-king",
+  "productName": "相簿王",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "My Electron application description",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "tsc && electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts ."
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
-    "electron": "^17.0.1"
+  "keywords": [],
+  "author": {
+    "name": "ben",
+    "email": "moon791017@gmail.com"
   },
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
-    "node-notifier": "^10.0.1"
-  },
+  "license": "MIT",
   "config": {
     "forge": {
       "packagerConfig": {
@@ -31,7 +26,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "gallery-king"
+            "name": "gallery_king"
           }
         },
         {
@@ -47,8 +42,35 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-wix",
+          "config": {
+            "language": 1033,
+            "manufacturer": "BEN"
+          }
         }
       ]
     }
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-wix": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "@types/node-notifier": "^8.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "electron": "17.0.1",
+    "electron-wix-msi": "^3.2.0",
+    "eslint": "^8.9.0",
+    "eslint-plugin-import": "^2.25.4",
+    "typescript": "~4.5.4"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "node-notifier": "^10.0.1"
   }
 }
