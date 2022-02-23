@@ -2,7 +2,7 @@
   "name": "gallery-king",
   "productName": "相簿王",
   "version": "1.0.1",
-  "description": "My Electron application description",
+  "description": "相簿王",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && electron-forge start",
