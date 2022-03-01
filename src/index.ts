@@ -74,9 +74,9 @@ ipcMain.handle('browseImage', async (event, ...args) => {
         "data": sortData
       }
     }
-    return {};
+   
   }
-
+  return {};
 })
 
 // 開啟資料夾
