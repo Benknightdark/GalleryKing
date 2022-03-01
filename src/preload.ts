@@ -105,6 +105,13 @@ window.addEventListener("load", function (event) {
   
         }
       })
+      // 刪除圖片
+      document.getElementById('delete-btn').addEventListener('click', async () => {
+        const selectedImageList = getSelectedImages();
+        if (selectedImageList.length > 0) {
+          await ipcRenderer.invoke('deleteImages', selectedImageList)
+        }
+      })      
       // 切換頁面的圖片
       const changeImageListByNextAndPrev = (page:any) => {
         const title = document.querySelector("title").innerHTML;
