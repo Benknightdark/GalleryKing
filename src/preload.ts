@@ -7,7 +7,6 @@ import { ipcRenderer } from "electron";
 window.addEventListener("load", function (event) {
     (async () => {
       let currentSelectFolder = ''
-    //   const { ipcRenderer } = require('electron')
       // 新增圖片列表
       const createImageList = (result:any) => {
         const folder:any = result.folder;
@@ -110,6 +109,9 @@ window.addEventListener("load", function (event) {
         const selectedImageList = getSelectedImages();
         if (selectedImageList.length > 0) {
           await ipcRenderer.invoke('deleteImages', selectedImageList)
+          document.querySelectorAll('.image-checkbox:checked').forEach(r => {
+            r.parentElement.parentElement.remove();
+          })
         }
       })      
       // 切換頁面的圖片

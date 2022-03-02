@@ -130,7 +130,8 @@ ipcMain.handle('moveImages', async (event, ...args) => {
 
 // 刪除圖片
 ipcMain.handle('deleteImages', async (event, ...args) => {
-  args.map(async d => {
-    await fsPromises.rm(d.path);
+  console.log(args)
+  args[0].map(async (image:any) => {
+    await fsPromises.rm(image.path);
   })
 })
