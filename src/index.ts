@@ -49,8 +49,7 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// 開啟圖片
 ipcMain.handle('browseImage', async (event, ...args) => {
   console.log(args)
   let folder;
@@ -74,12 +73,12 @@ ipcMain.handle('browseImage', async (event, ...args) => {
         "folder": folder,
         "data": sortData
       }
-    }
-    return {};
+    } 
   }
-
+  return {};
 })
 
+// 開啟資料夾
 ipcMain.handle('browseFolder', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
@@ -93,12 +92,13 @@ ipcMain.handle('browseFolder', async (event, ...args) => {
   return {};
 })
 
+// 複製圖片
 ipcMain.handle('copyImages', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
-    sourceImages.map(async (image:any) => {
+    sourceImages.map(async (image: any) => {
       await fsPromises.copyFile(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
@@ -110,12 +110,13 @@ ipcMain.handle('copyImages', async (event, ...args) => {
   });
 })
 
+// 移動圖片
 ipcMain.handle('moveImages', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
-    sourceImages.map(async (image:any) => {
+    sourceImages.map(async (image: any) => {
       await fsPromises.rename(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
@@ -125,4 +126,12 @@ ipcMain.handle('moveImages', async (event, ...args) => {
     icon: path.join(__dirname, '/assets/icon.png'),
     sound: true,
   });
+})
+
+// 刪除圖片
+ipcMain.handle('deleteImages', async (event, ...args) => {
+  console.log(args)
+  args[0].map(async (image:any) => {
+    await fsPromises.rm(image.path);
+  })
 })
