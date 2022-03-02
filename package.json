@@ -1,7 +1,7 @@
 {
   "name": "gallery-king",
   "productName": "相簿王",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "相簿王",
   "main": "dist/index.js",
   "scripts": {
