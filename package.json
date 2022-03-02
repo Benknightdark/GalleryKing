@@ -46,8 +46,6 @@
         {
           "name": "@electron-forge/maker-wix",
           "config": {
-            "language": 1033,
-            "manufacturer": "BEN"
           }
         }
       ]
@@ -64,7 +62,7 @@
     "@types/node-notifier": "^8.0.2",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
-    "electron": "17.0.1",
+    "electron": "17.1.0",
     "electron-wix-msi": "^3.2.0",
     "eslint": "^8.9.0",
     "eslint-plugin-import": "^2.25.4",
