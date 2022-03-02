@@ -6,7 +6,9 @@ import { ipcRenderer } from "electron";
 // It has the same sandbox as a Chrome extension.
 window.addEventListener("load", function (event) {
     (async () => {
-      let currentSelectFolder = ''
+      const bannerTitle=this.document.getElementById('banner-title')
+      const appInfo=await ipcRenderer.invoke('getAppInfo');
+      document.querySelector("title").innerHTML=`${appInfo['appName']} (${appInfo['version']})`
       // 新增圖片列表
       const createImageList = (result:any) => {
         const folder:any = result.folder;
@@ -29,7 +31,11 @@ window.addEventListener("load", function (event) {
         </div> 
         `
         });
-        currentSelectFolder = folder;
+        // currentSelectFolder = folder;
+        // console.log(currentSelectFolder)
+        const tempTitle:string=folder.split('\\')[folder.split('\\').length-1];
+
+        bannerTitle.innerHTML=tempTitle.includes('//')?tempTitle.split('//')[1]:tempTitle
       }
       // 新增資料夾列表
       const createFolderList = (result:any) => {
@@ -78,6 +84,7 @@ window.addEventListener("load", function (event) {
       document.getElementById("browse-image-btn").addEventListener("click", async () => {
         const result = await ipcRenderer.invoke('browseImage')
         createImageList(result)
+        console.log(result)
         const sidebar = document.querySelector(".sidebar") as any;
         sidebar.style['display'] = 'none'
         document.querySelector("title").innerHTML = result.folder
