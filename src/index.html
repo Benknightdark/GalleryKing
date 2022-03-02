@@ -10,7 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/flowbite@1.3.3/dist/flowbite.min.css" />
 
-  <title>相簿王</title>
+  <title></title>
 </head>
 
 <body>
@@ -18,22 +18,35 @@
     <!-- mobile menu bar -->
     <div class="bg-gray-800 text-gray-100 flex justify-between fixed top-0 left-0 right-0 z-50">
       <!-- logo -->
-      <a href="#" class="block p-4 text-white font-bold">Gallery King</a>
-      <a href="#" class="text-white flex items-center space-x-2 px-4" id="browse-btn">
+      <a href="#" class="block p-4 text-white font-bold" id="banner-title">Gallery King</a>
+      <!-- 打開資料夾 -->
+      <a href="#" class="text-white flex items-center space-x-2 px-4" id="browse-btn" data-tooltip-target="tooltip-open-folder">
         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
         </svg>
-        <span class="text-xl font-extrabold">打開資料夾</span>
+        <span class="text-xl font-extrabold hidden sm:inline ml:inline">打開資料夾</span>
       </a>
-      <a href="#" class="text-white flex items-center space-x-2 px-4" id="browse-image-btn">
+      <div id="tooltip-open-folder" role="tooltip"
+        class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+        打開資料夾
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+      <!-- 打開圖片 -->
+      <a href="#" class="text-white flex items-center space-x-2 px-4" id="browse-image-btn"
+        data-tooltip-target="tooltip-open-image">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
             d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
             clip-rule="evenodd" />
         </svg>
-        <span class="text-xl font-extrabold">打開圖片</span>
+        <span class="text-xl font-extrabold hidden sm:inline ml:inline">打開圖片</span>
       </a>
+      <div id="tooltip-open-image" role="tooltip"
+        class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+        打開圖片
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
       <!-- mobile menu button -->
       <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -116,12 +129,12 @@
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
         <!-- Modal header -->
-        <div class="flex justify-between items-center py-4 px-6 rounded-t border-b dark:border-gray-600">
-          <h3 class="text-base font-semibold text-gray-900 lg:text-xl dark:text-white">
+        <div class="flex justify-between items-center py-4 px-6 rounded-t border-b bg-gradient-to-r from-cyan-500 to-blue-500 ">
+          <h3 class="font-extrabold	 text-pink-500		underline  text-2xl">
             設定
           </h3>
           <button type="button"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            class="text-yellow-300 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
             data-modal-toggle="walletModal">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd"
@@ -135,7 +148,7 @@
           <ul class="my-2 space-y-3">
             <li>
               <a href="#" id="copy-btn"
-                class="flex items-center p-3 text-base font-bold text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+                class="flex items-center p-3 text-base font-bold text-gray-900 bg-blue-50 rounded-lg hover:bg-blue-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -146,13 +159,22 @@
             </li>
             <li>
               <a href="#" id="move-btn"
-                class="flex items-center p-3 text-base font-bold text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+                class="flex items-center p-3 text-base font-bold text-gray-900 bg-green-50 rounded-lg hover:bg-green-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 <span class="flex-1 ml-3 whitespace-nowrap">搬移已選取的圖片</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" id="delete-btn"
+                class="flex items-center p-3 text-base font-bold text-gray-900 bg-red-50 rounded-lg hover:bg-red-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="flex-1 ml-3 whitespace-nowrap">刪除已選取的圖片</span>
               </a>
             </li>
           </ul>

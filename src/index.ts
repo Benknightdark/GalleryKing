@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import * as notifier from 'node-notifier'
 import * as path from 'path';
 import * as fs from 'fs';
+import * as isDev from 'electron-is-dev'
 const fsPromises = fs.promises;
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -19,12 +20,15 @@ const createWindow = (): void => {
       nodeIntegration: true
     }
   });
-
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '../src/index.html'));
-
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+    console.log('Running in development');
+  } else {
+    console.log('Running in production');
+  }
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -49,8 +53,7 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// 開啟圖片
 ipcMain.handle('browseImage', async (event, ...args) => {
   console.log(args)
   let folder;
@@ -75,11 +78,11 @@ ipcMain.handle('browseImage', async (event, ...args) => {
         "data": sortData
       }
     }
-    return {};
   }
-
+  return {};
 })
 
+// 開啟資料夾
 ipcMain.handle('browseFolder', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
@@ -93,12 +96,13 @@ ipcMain.handle('browseFolder', async (event, ...args) => {
   return {};
 })
 
+// 複製圖片
 ipcMain.handle('copyImages', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
-    sourceImages.map(async (image:any) => {
+    sourceImages.map(async (image: any) => {
       await fsPromises.copyFile(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
@@ -110,12 +114,13 @@ ipcMain.handle('copyImages', async (event, ...args) => {
   });
 })
 
+// 移動圖片
 ipcMain.handle('moveImages', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
-    sourceImages.map(async (image:any) => {
+    sourceImages.map(async (image: any) => {
       await fsPromises.rename(image['path'], destinationFolder + "\\" + image['file']);
     })
   }
@@ -125,4 +130,20 @@ ipcMain.handle('moveImages', async (event, ...args) => {
     icon: path.join(__dirname, '/assets/icon.png'),
     sound: true,
   });
+})
+
+// 刪除圖片
+ipcMain.handle('deleteImages', async (event, ...args) => {
+  console.log(args)
+  args[0].map(async (image: any) => {
+    await fsPromises.rm(image.path);
+  })
+})
+
+// 取得應用程式名稱和版本
+ipcMain.handle('getAppInfo', async (event, ...args) => {
+ return {
+   appName:app.getName(),
+   version:app.getVersion()
+ }
 })
