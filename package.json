@@ -1,8 +1,8 @@
 {
   "name": "gallery-king",
-  "productName": "相簿王",
+  "productName": "galleryKing",
   "version": "1.0.3",
-  "description": "相簿王",
+  "description": "galleryKing",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && electron-forge start",
@@ -46,6 +46,8 @@
         {
           "name": "@electron-forge/maker-wix",
           "config": {
+            "appIconPath": "./assets/icon.ico",
+            "language": "1028"
           }
         }
       ]
