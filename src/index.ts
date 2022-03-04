@@ -152,3 +152,8 @@ ipcMain.handle('getAppInfo', async (event, ...args) => {
     version: app.getVersion()
   }
 })
+
+ipcMain.handle('dropAction', async (event, ...args) => {
+  const checkIsFolder=await checkIsDirectory(args[0]);
+  console.log(checkIsFolder)
+})

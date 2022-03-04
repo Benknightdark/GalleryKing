@@ -143,5 +143,30 @@ window.addEventListener("load", function (event) {
       document.getElementById('next-btn').addEventListener('click', async () => {
         changeImageListByNextAndPrev(1)
       })
+      const dropBtns=document.getElementsByClassName('drop-btn')
+      for (let i = 0; i < dropBtns.length; i++) {
+        console.log(dropBtns[i])
+        dropBtns[i].addEventListener("drop", async function (ev:any) {
+          ev.preventDefault();
+          console.log('ddsfsdf')
+          let path='';
+          if (ev.dataTransfer.items) {
+            for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+              if (ev.dataTransfer.items[i].kind === 'file') {
+                console.log(ev.dataTransfer.items[i].getAsFile())
+                path = ev.dataTransfer.items[i].getAsFile().name;
+                
+              }
+            }
+          } else {
+            for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+              console.log(ev.dataTransfer.files)
+
+              path=ev.dataTransfer.files[i].name
+            }
+          }
+          await ipcRenderer.invoke('dropAction', path)
+        })
+      }
     })()
   });
