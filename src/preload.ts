@@ -87,7 +87,9 @@ window.addEventListener("load", function (event) {
         }
       }
       const result = await ipcRenderer.invoke('dropAction', path)
-      createFolderList(result)
+      createFolderList(result)     
+      const currentTargetClassList=(ev.target as HTMLElement).classList
+      currentTargetClassList.remove("bg-sky-700")
     }
     const dropImageAction = async (ev: DragEvent) => {
       ev.preventDefault();
