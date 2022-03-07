@@ -36,6 +36,11 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
+// 判斷檔案路徑是否為資料夾
+const checkIsDirectory = async (path: string): Promise<boolean> => {
+  const fsStat = await fsPromises.stat(path)
+  return fsStat.isDirectory()
+}
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -142,8 +147,26 @@ ipcMain.handle('deleteImages', async (event, ...args) => {
 
 // 取得應用程式名稱和版本
 ipcMain.handle('getAppInfo', async (event, ...args) => {
- return {
-   appName:app.getName(),
-   version:app.getVersion()
- }
+  return {
+    appName: app.getName(),
+    version: app.getVersion()
+  }
+})
+
+ipcMain.handle('dropAction', async (event, ...args) => {
+  try {
+    const checkIsFolder = await checkIsDirectory(args[0]);
+    console.log(checkIsFolder)
+    const data = await fsPromises.readdir(args[0]);
+    const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
+    return {
+      "folder": args[0],
+      "isFolder": checkIsFolder,
+      "data": sortData
+    }
+  } catch (error) {
+    console.log(error)
+    return {}
+  }
+
 })
