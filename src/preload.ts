@@ -31,10 +31,7 @@ window.addEventListener("load", function (event) {
         </div> 
         `
       });
-      // currentSelectFolder = folder;
-      // console.log(currentSelectFolder)
       const tempTitle: string = folder.split('\\')[folder.split('\\').length - 1];
-
       bannerTitle.innerHTML = tempTitle.includes('//') ? tempTitle.split('//')[1] : tempTitle
     }
     // 新增資料夾列表
