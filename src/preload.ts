@@ -75,33 +75,51 @@ window.addEventListener("load", function (event) {
       }
       return selectedImageList
     }
+    const dropFolderAction = async (ev: DragEvent) => {
+      ev.preventDefault();
+      let path = '';
+      if (ev.dataTransfer.items) {
+        for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+          if (ev.dataTransfer.items[i].kind === 'file') {
+            path = ev.dataTransfer.items[i].getAsFile().path
+          }
+        }
+      } else {
+        for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+          path = ev.dataTransfer.files[i].path
+        }
+      }
+      const result = await ipcRenderer.invoke('dropAction', path)
+      createFolderList(result)
+
+
+    }
+    const dropImageAction = async (ev: DragEvent) => {
+      ev.preventDefault();
+      let path = '';
+      if (ev.dataTransfer.items) {
+        for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+          if (ev.dataTransfer.items[i].kind === 'file') {
+            path = ev.dataTransfer.items[i].getAsFile().path
+          }
+        }
+      } else {
+        for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+          path = ev.dataTransfer.files[i].path
+        }
+      }
+      const result = await ipcRenderer.invoke('dropAction', path)
+      createImageList(result)
+      const sidebar = document.querySelector(".sidebar") as any;
+      sidebar.style['display'] = 'none'
+      document.querySelector("title").innerHTML = result.folder
+    }
     // 取得子資料夾
     document.getElementById("browse-btn").addEventListener("click", async () => {
       const result = await ipcRenderer.invoke('browseFolder')
       createFolderList(result)
     })
-    document.getElementById("browse-btn").ondrop = async (ev: any) => {
-      ev.preventDefault();
-      console.log('ddsfsdf')
-      let path = '';
-      if (ev.dataTransfer.items) {
-        for (let i = 0; i < ev.dataTransfer.items.length; i++) {
-          if (ev.dataTransfer.items[i].kind === 'file') {
-            console.log(ev.dataTransfer.items[i].getAsFile())
-            path = ev.dataTransfer.items[i].getAsFile().name;
-
-          }
-        }
-      } else {
-        for (let i = 0; i < ev.dataTransfer.files.length; i++) {
-          console.log(ev.dataTransfer.files)
-
-          path = ev.dataTransfer.files[i].name
-        }
-      }
-      await ipcRenderer.invoke('dropAction', path)
-    }
-
+    document.getElementById("browse-btn").addEventListener('drop', dropFolderAction)
     // 取得資料夾的圖片
     document.getElementById("browse-image-btn").addEventListener("click", async () => {
       const result = await ipcRenderer.invoke('browseImage')
@@ -111,6 +129,7 @@ window.addEventListener("load", function (event) {
       sidebar.style['display'] = 'none'
       document.querySelector("title").innerHTML = result.folder
     })
+    document.getElementById("browse-image-btn").addEventListener('drop', dropImageAction)
     // 回到最上頁
     document.getElementById("scroll-top-btn").addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -165,30 +184,5 @@ window.addEventListener("load", function (event) {
     document.getElementById('next-btn').addEventListener('click', async () => {
       changeImageListByNextAndPrev(1)
     })
-    // const dropBtns=document.getElementsByClassName('drop-btn')
-    // for (let i = 0; i < dropBtns.length; i++) {
-    //   console.log(dropBtns[i])
-    //   dropBtns[i].addEventListener("drop", async function (ev:any) {
-    //     ev.preventDefault();
-    //     console.log('ddsfsdf')
-    //     let path='';
-    //     if (ev.dataTransfer.items) {
-    //       for (let i = 0; i < ev.dataTransfer.items.length; i++) {
-    //         if (ev.dataTransfer.items[i].kind === 'file') {
-    //           console.log(ev.dataTransfer.items[i].getAsFile())
-    //           path = ev.dataTransfer.items[i].getAsFile().name;
-
-    //         }
-    //       }
-    //     } else {
-    //       for (let i = 0; i < ev.dataTransfer.files.length; i++) {
-    //         console.log(ev.dataTransfer.files)
-
-    //         path=ev.dataTransfer.files[i].name
-    //       }
-    //     }
-    //     await ipcRenderer.invoke('dropAction', path)
-    //   })
-    // }
   })()
 });
