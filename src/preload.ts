@@ -31,10 +31,7 @@ window.addEventListener("load", function (event) {
         </div> 
         `
       });
-      // currentSelectFolder = folder;
-      // console.log(currentSelectFolder)
       const tempTitle: string = folder.split('\\')[folder.split('\\').length - 1];
-
       bannerTitle.innerHTML = tempTitle.includes('//') ? tempTitle.split('//')[1] : tempTitle
     }
     // 新增資料夾列表
@@ -90,7 +87,9 @@ window.addEventListener("load", function (event) {
         }
       }
       const result = await ipcRenderer.invoke('dropAction', path)
-      createFolderList(result)
+      createFolderList(result)     
+      const currentTargetClassList=(ev.target as HTMLElement).classList
+      currentTargetClassList.remove("bg-sky-700")
     }
     const dropImageAction = async (ev: DragEvent) => {
       ev.preventDefault();

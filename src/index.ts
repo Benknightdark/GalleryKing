@@ -37,9 +37,18 @@ const createWindow = (): void => {
 app.on('ready', createWindow);
 
 // 判斷檔案路徑是否為資料夾
-const checkIsDirectory = async (path: string): Promise<boolean> => {
-  const fsStat = await fsPromises.stat(path)
-  return fsStat.isDirectory()
+// const checkIsDirectory = async (path: string): Promise<boolean> => {
+//   const fsStat = await fsPromises.stat(path)
+//   return fsStat.isDirectory()
+// }
+// 回傳資料夾裡的子資料夾或是圖片資料列表
+const getFolderData = async (folderPath: string) => {
+  const data = await fsPromises.readdir(folderPath);
+  const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
+  return {
+    "folder": folderPath,
+    "data": sortData
+  }
 }
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -60,28 +69,17 @@ app.on('activate', () => {
 
 // 開啟圖片
 ipcMain.handle('browseImage', async (event, ...args) => {
-  console.log(args)
   let folder;
   if (args.length > 0) {
     // 直接開啟資料夾裡的所有圖片
     folder = args[0];
-    const data = await fsPromises.readdir(folder);
-    const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
-    return {
-      "folder": folder,
-      "data": sortData
-    }
+    return await getFolderData(folder)
   } else {
     // 選擇要開的資料夾裡的圖片
     const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
     if (!dialogCallback.canceled) {
       folder = dialogCallback.filePaths[0];
-      const data = await fsPromises.readdir(folder);
-      const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
-      return {
-        "folder": folder,
-        "data": sortData
-      }
+      return await getFolderData(folder)
     }
   }
   return {};
@@ -92,11 +90,7 @@ ipcMain.handle('browseFolder', async (event, ...args) => {
   const dialogCallback = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (!dialogCallback.canceled) {
     const folder = dialogCallback.filePaths[0];
-    const data = await fsPromises.readdir(folder);
-    return {
-      "folder": folder,
-      "data": data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
-    }
+    return await getFolderData(folder)
   }
   return {};
 })
@@ -155,15 +149,7 @@ ipcMain.handle('getAppInfo', async (event, ...args) => {
 
 ipcMain.handle('dropAction', async (event, ...args) => {
   try {
-    const checkIsFolder = await checkIsDirectory(args[0]);
-    console.log(checkIsFolder)
-    const data = await fsPromises.readdir(args[0]);
-    const sortData = data.sort((x, y) => x.localeCompare(y, 'zh-TW', { numeric: true }))
-    return {
-      "folder": args[0],
-      "isFolder": checkIsFolder,
-      "data": sortData
-    }
+    return await getFolderData(args[0])
   } catch (error) {
     console.log(error)
     return {}
