@@ -37,10 +37,10 @@ const createWindow = (): void => {
 app.on('ready', createWindow);
 
 // 判斷檔案路徑是否為資料夾
-const checkIsDirectory = async (path: string): Promise<boolean> => {
-  const fsStat = await fsPromises.stat(path)
-  return fsStat.isDirectory()
-}
+// const checkIsDirectory = async (path: string): Promise<boolean> => {
+//   const fsStat = await fsPromises.stat(path)
+//   return fsStat.isDirectory()
+// }
 // 回傳資料夾裡的子資料夾或是圖片資料列表
 const getFolderData = async (folderPath: string) => {
   const data = await fsPromises.readdir(folderPath);
