@@ -91,8 +91,6 @@ window.addEventListener("load", function (event) {
       }
       const result = await ipcRenderer.invoke('dropAction', path)
       createFolderList(result)
-
-
     }
     const dropImageAction = async (ev: DragEvent) => {
       ev.preventDefault();
