@@ -102,15 +102,16 @@ ipcMain.handle('copyImages', async (event, ...args) => {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
     sourceImages.map(async (image: any) => {
-      await fsPromises.copyFile(image['path'], destinationFolder + "\\" + image['file']);
+      await fsPromises.copyFile(image['path'], path.join(destinationFolder, image['file']));
     })
+    notifier.notify({
+      title: 'Gallery King',
+      message: '完成複製圖片工作',
+      icon: path.join(__dirname, '/assets/icon.png'),
+      sound: true,
+    });
   }
-  notifier.notify({
-    title: 'Gallery King',
-    message: '完成複製圖片工作',
-    icon: path.join(__dirname, '/assets/icon.png'),
-    sound: true,
-  });
+
 })
 
 // 移動圖片
@@ -120,15 +121,16 @@ ipcMain.handle('moveImages', async (event, ...args) => {
     const destinationFolder = dialogCallback.filePaths[0];
     const sourceImages = args[0]
     sourceImages.map(async (image: any) => {
-      await fsPromises.rename(image['path'], destinationFolder + "\\" + image['file']);
+      //destinationFolder + "\\" + image['file']
+      await fsPromises.rename(image['path'], path.join(destinationFolder, image['file']));
     })
+    notifier.notify({
+      title: 'Gallery King',
+      message: '完成搬移圖片工作',
+      icon: path.join(__dirname, '/assets/icon.png'),
+      sound: true,
+    });
   }
-  notifier.notify({
-    title: 'Gallery King',
-    message: '完成搬移圖片工作',
-    icon: path.join(__dirname, '/assets/icon.png'),
-    sound: true,
-  });
 })
 
 // 刪除圖片
