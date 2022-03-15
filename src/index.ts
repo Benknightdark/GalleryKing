@@ -144,7 +144,7 @@ ipcMain.handle('deleteImages', async (event, ...args) => {
 // 取得應用程式名稱和版本
 ipcMain.handle('getAppInfo', async (event, ...args) => {
   return {
-    appName: app.getName(),
+    appName: "相簿王",
     version: app.getVersion()
   }
 })
