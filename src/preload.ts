@@ -1,7 +1,6 @@
 // preload.js
 
 import { ipcRenderer } from "electron";
-
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener("load", function (event) {
@@ -26,7 +25,7 @@ window.addEventListener("load", function (event) {
              focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
            </div>
             <img
-            src="${folder}/${element}"
+            src="${folder}/${element}" class="image-data"
             alt="image"/>   
         </div> 
         `
