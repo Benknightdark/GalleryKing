@@ -1,7 +1,6 @@
 // preload.js
 
 import { ipcRenderer } from "electron";
-
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener("load", function (event) {
@@ -20,13 +19,13 @@ window.addEventListener("load", function (event) {
            <div class="absolute top-0 right-0">
            <input  type="checkbox"
             data-file="${element}"
-            data-path="${folder}\\${element}"
+            data-path="${folder}/${element}"
             class="image-checkbox w-10 h-10 text-blue-600 bg-gray-100 rounded border-gray-300 
             focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
              focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
            </div>
             <img
-            src="${folder}\\${element}"
+            src="${folder}/${element}" class="image-data"
             alt="image"/>   
         </div> 
         `
@@ -87,8 +86,8 @@ window.addEventListener("load", function (event) {
         }
       }
       const result = await ipcRenderer.invoke('dropAction', path)
-      createFolderList(result)     
-      const currentTargetClassList=(ev.target as HTMLElement).classList
+      createFolderList(result)
+      const currentTargetClassList = (ev.target as HTMLElement).classList
       currentTargetClassList.remove("bg-sky-700")
     }
     const dropImageAction = async (ev: DragEvent) => {
@@ -146,7 +145,6 @@ window.addEventListener("load", function (event) {
         document.querySelectorAll('.image-checkbox:checked').forEach(r => {
           r.parentElement.parentElement.remove();
         })
-
       }
     })
     // 刪除圖片
