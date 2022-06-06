@@ -24,8 +24,20 @@ function dragLeave_handler(ev: DragEvent) {
 
 // 檢視照片
 $(document).on('click', ".image-data", function (event) {
-    console.log( )
-    const selectedImage=$(event.currentTarget).attr('src') ;
-    $('#image-preview').attr('src',selectedImage)
+    const selectedImage = $(event.currentTarget).attr('src');
+    console.log(event.currentTarget)
+    $('#image-preview').attr('src', selectedImage)
     toggleModal('imageModal', true);
 });
+
+
+this.document.getElementById('btnAutoPlay').addEventListener('click', async () => {
+    console.log('auto')
+    setTimeout(() => {
+        console.log('aa')
+        for (let i = 0; i < document.querySelector('#imageList').childElementCount - 1; i++) {
+            (document.querySelector(`#imageList > div:nth-child(${i}) > img`) as HTMLElement).click()
+        }
+        //document.getElementsByClassName("browse-images-btn")
+    }, 500)
+})
