@@ -29,8 +29,9 @@ $(document).on('click', ".image-data", function (event) {
     console.log(event.currentTarget)
     $('#image-preview').attr('src', selectedImage)
     // toggleModal('imageModal', true);
-    const modal = new Modal(document.getElementById('imageModal'));
-    modal.toggle();
+    // const modal = new Modal(document.getElementById('imageModal'));
+    // modal.toggle();
+    document.getElementById('cc').click();
 });
 
 const autoShow=async (listIndex:number,childElementCount: number)=>{
@@ -38,10 +39,7 @@ const autoShow=async (listIndex:number,childElementCount: number)=>{
     for (let i = 0; i <childElementCount+1; i++) {
         (function (x) {
             setTimeout(function () {
-                console.log(x);
-                console.log(childElementCount)
-                const modal = new Modal(document.getElementById('imageModal'));
-                modal.toggle();
+                // document.getElementById('cc')?.click();
                 (document.querySelector(`#imageList > div:nth-child(${x}) > img`) as HTMLElement).click()
                 if (x===childElementCount){
                     ((x1,x2)=>{
