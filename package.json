@@ -1,7 +1,7 @@
 {
   "name": "gallery-king",
   "productName": "galleryKing",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "galleryKing",
   "main": "dist/index.js",
   "scripts": {
