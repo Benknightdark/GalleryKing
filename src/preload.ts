@@ -1,6 +1,7 @@
 // preload.js
 
 import { ipcRenderer } from "electron";
+declare function toggleModal(id: string, show: boolean): any;
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener("load", function (event) {
@@ -179,5 +180,6 @@ window.addEventListener("load", function (event) {
     document.getElementById('next-btn').addEventListener('click', async () => {
       changeImageListByNextAndPrev(1)
     })
+   
   })()
 });
