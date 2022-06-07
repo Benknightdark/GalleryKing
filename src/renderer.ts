@@ -49,10 +49,10 @@ const autoShow=async (listIndex:number,childElementCount: number)=>{
                             console.log('end');
                             (document.querySelectorAll('.browse-images-btn')[listIndex+1] as HTMLElement).click()
                            autoShow (listIndex+1,document.querySelector('#imageList').childElementCount)
-                        },3000)
+                        },1000)
                     })(x,childElementCount)
                 }
-            }, 1000 * x)
+            }, 3000 * x)
         })(i)
        
     }
