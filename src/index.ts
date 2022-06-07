@@ -28,6 +28,7 @@ const createWindow = (): void => {
   } else {
     console.log('Running in production');
   }
+  mainWindow.maximize();
   // Open the DevTools.
 };
 
