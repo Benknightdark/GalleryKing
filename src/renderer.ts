@@ -2,6 +2,7 @@
 const btn = document.querySelector(".mobile-menu-button");
 const sidebar = document.querySelector(".sidebar") as HTMLElement;
 declare function toggleModal(id: string, show: boolean): any;
+declare let Modal: any;
 // 開啟或關閉左側選單
 btn.addEventListener("click", () => {
     sidebar.style['display'] = sidebar.style['display'] === "inherit" ? "none" : "inherit"
@@ -27,17 +28,37 @@ $(document).on('click', ".image-data", function (event) {
     const selectedImage = $(event.currentTarget).attr('src');
     console.log(event.currentTarget)
     $('#image-preview').attr('src', selectedImage)
-    toggleModal('imageModal', true);
+    // toggleModal('imageModal', true);
+    const modal = new Modal(document.getElementById('imageModal'));
+    modal.toggle();
 });
 
-
+const autoShow=async (listIndex:number,childElementCount: number)=>{
+    //document.querySelector('#imageList').childElementCount
+    for (let i = 0; i <childElementCount+1; i++) {
+        (function (x) {
+            setTimeout(function () {
+                console.log(x);
+                console.log(childElementCount)
+                const modal = new Modal(document.getElementById('imageModal'));
+                modal.toggle();
+                (document.querySelector(`#imageList > div:nth-child(${x}) > img`) as HTMLElement).click()
+                if (x===childElementCount){
+                    ((x1,x2)=>{
+                        setTimeout(()=>{
+                            console.log('end');
+                            (document.querySelectorAll('.browse-images-btn')[listIndex+1] as HTMLElement).click()
+                           autoShow (listIndex+1,document.querySelector('#imageList').childElementCount)
+                        },3000)
+                    })(x,childElementCount)
+                }
+            }, 1000 * x)
+        })(i)
+       
+    }
+}
 this.document.getElementById('btnAutoPlay').addEventListener('click', async () => {
-    console.log('auto')
-    setTimeout(() => {
-        console.log('aa')
-        for (let i = 0; i < document.querySelector('#imageList').childElementCount - 1; i++) {
-            (document.querySelector(`#imageList > div:nth-child(${i}) > img`) as HTMLElement).click()
-        }
-        //document.getElementsByClassName("browse-images-btn")
-    }, 500)
+    await autoShow(0,document.querySelector('#imageList').childElementCount)
 })
+
+
