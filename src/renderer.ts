@@ -26,39 +26,48 @@ function dragLeave_handler(ev: DragEvent) {
 // 檢視照片
 $(document).on('click', ".image-data", function (event) {
     const selectedImage = $(event.currentTarget).attr('src');
-    console.log(event.currentTarget)
     $('#image-preview').attr('src', selectedImage)
-    // toggleModal('imageModal', true);
-    const modal = new Modal(document.getElementById('imageModal'));
-    modal.toggle();
+    document.getElementById('cc').click();
 });
+const clearAllTimeouts = () => {
+    let id = window.setTimeout(null, 0);
+    while (id--) {
+        window.clearTimeout(id);
+    }
+}
+const autoShow = async (listIndex: number) => {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    const childElementCount = document.querySelector('#imageList').childElementCount
+    console.log(listIndex, childElementCount);
+    (document.querySelector(`#imageList > div:nth-child(${1}) > img`) as HTMLElement).click()                 
 
-const autoShow=async (listIndex:number,childElementCount: number)=>{
-    //document.querySelector('#imageList').childElementCount
-    for (let i = 0; i <childElementCount+1; i++) {
+    for (let i = 2; i < childElementCount + 1; i++) {
         (function (x) {
             setTimeout(function () {
-                console.log(x);
-                console.log(childElementCount)
-                const modal = new Modal(document.getElementById('imageModal'));
-                modal.toggle();
-                (document.querySelector(`#imageList > div:nth-child(${x}) > img`) as HTMLElement).click()
-                if (x===childElementCount){
-                    ((x1,x2)=>{
-                        setTimeout(()=>{
-                            console.log('end');
-                            (document.querySelectorAll('.browse-images-btn')[listIndex+1] as HTMLElement).click()
-                           autoShow (listIndex+1,document.querySelector('#imageList').childElementCount)
-                        },3000)
-                    })(x,childElementCount)
+                try {
+                    const currentImg=$((document.querySelector(`#imageList > div:nth-child(${x}) > img`))).attr('src');
+                    $('#image-preview').attr('src',currentImg);
+                    if (x === childElementCount) {
+                        ((newListIndex) => {
+                            setTimeout(async () => {
+                                console.log('end');
+                               document.getElementById('cc').click();
+                                (document.querySelectorAll('.browse-images-btn')[newListIndex + 1] as HTMLElement).click();
+                                clearAllTimeouts();
+                                autoShow(newListIndex + 1);
+                            }, 1000)
+                        })(listIndex)
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
-            }, 1000 * x)
+            }, 5000 * x)
         })(i)
-       
+
     }
 }
 this.document.getElementById('btnAutoPlay').addEventListener('click', async () => {
-    await autoShow(0,document.querySelector('#imageList').childElementCount)
+    await autoShow(0)
 })
 
 
