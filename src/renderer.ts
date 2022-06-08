@@ -35,22 +35,22 @@ const clearAllTimeouts = () => {
         window.clearTimeout(id);
     }
 }
-const autoShow = async (listIndex: number, childElementCount: number) => {
+const autoShow = async (listIndex: number) => {
     await new Promise(resolve => setTimeout(resolve, 5000));
-    childElementCount = document.querySelector('#imageList').childElementCount
+    const childElementCount = document.querySelector('#imageList').childElementCount
     console.log(listIndex, childElementCount)
     for (let i = 0; i < childElementCount + 1; i++) {
         (function (x) {
             setTimeout(function () {
                 try {
-                    (document.querySelector(`#imageList > div:nth-child(${x}) > img`) as HTMLElement).click()
+                    (document.querySelector(`#imageList > div:nth-child(${x}) > img`) as HTMLElement).click()                 
                     if (x === childElementCount) {
                         ((newListIndex) => {
                             setTimeout(async () => {
                                 console.log('end');
                                 (document.querySelectorAll('.browse-images-btn')[newListIndex + 1] as HTMLElement).click();
                                 clearAllTimeouts();
-                                autoShow(newListIndex + 1, document.querySelector('#imageList').childElementCount);
+                                autoShow(newListIndex + 1);
                             }, 1000)
                         })(listIndex)
                     }
@@ -63,7 +63,7 @@ const autoShow = async (listIndex: number, childElementCount: number) => {
     }
 }
 this.document.getElementById('btnAutoPlay').addEventListener('click', async () => {
-    await autoShow(0, document.querySelector('#imageList').childElementCount)
+    await autoShow(0)
 })
 
 
