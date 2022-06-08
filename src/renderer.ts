@@ -38,16 +38,20 @@ const clearAllTimeouts = () => {
 const autoShow = async (listIndex: number) => {
     await new Promise(resolve => setTimeout(resolve, 5000));
     const childElementCount = document.querySelector('#imageList').childElementCount
-    console.log(listIndex, childElementCount)
-    for (let i = 0; i < childElementCount + 1; i++) {
+    console.log(listIndex, childElementCount);
+    (document.querySelector(`#imageList > div:nth-child(${1}) > img`) as HTMLElement).click()                 
+
+    for (let i = 2; i < childElementCount + 1; i++) {
         (function (x) {
             setTimeout(function () {
                 try {
-                    (document.querySelector(`#imageList > div:nth-child(${x}) > img`) as HTMLElement).click()                 
+                    const currentImg=$((document.querySelector(`#imageList > div:nth-child(${x}) > img`))).attr('src');
+                    $('#image-preview').attr('src',currentImg);
                     if (x === childElementCount) {
                         ((newListIndex) => {
                             setTimeout(async () => {
                                 console.log('end');
+                               document.getElementById('cc').click();
                                 (document.querySelectorAll('.browse-images-btn')[newListIndex + 1] as HTMLElement).click();
                                 clearAllTimeouts();
                                 autoShow(newListIndex + 1);
@@ -57,7 +61,7 @@ const autoShow = async (listIndex: number) => {
                 } catch (error) {
                     console.error(error)
                 }
-            }, 5000 * x)
+            }, 500 * x)
         })(i)
 
     }
