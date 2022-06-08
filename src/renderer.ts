@@ -61,7 +61,7 @@ const autoShow = async (listIndex: number) => {
                 } catch (error) {
                     console.error(error)
                 }
-            }, 500 * x)
+            }, 5000 * x)
         })(i)
 
     }
